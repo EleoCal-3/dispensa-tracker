@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dispensa Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f1a;
+  --bg-2: #1a1a2e;
+  --card: #252542;
+  --border: #3a3a5c;
+  --accent: #e94560;
+  --accent-soft: #ff6b6b;
+  --green: #4ecca3;
+  --yellow: #ffc857;
+  --blue: #60a5fa;
+  --purple: #a78bfa;
+  --text: #eaeaea;
+  --text-2: #a0a0b0;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  font-family: var(--sans);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.container { max-width: 500px; margin: 0 auto; min-height: 100vh; }
+
+/* ── LOADING ── */
+#loading {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 999; gap: 16px;
+  transition: opacity 0.4s;
+}
+#loading.fade { opacity: 0; pointer-events: none; }
+.load-icon { font-size: 48px; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.load-text { font-family: var(--mono); font-size: 12px; color: var(--text-2); letter-spacing: 0.1em; }
+
+/* ── HEADER ── */
+header {
+  background: var(--bg-2);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { font-size: 28px; }
+.brand-name {
+  font-family: var(--mono); font-size: 1.1rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.brand-sub { font-size: 0.7rem; color: var(--text-2); }
+.header-stats { display: flex; gap: 8px; }
+.stat-pill {
+  background: rgba(255,255,255,0.1); border-radius: 8px;
+  padding: 4px 10px; text-align: center;
+}
+.stat-n { font-family: var(--mono); font-size: 1rem; font-weight: 700; }
+.stat-n.warn { color: var(--yellow); }
+.stat-n.danger { color: var(--accent); }
+.stat-l { font-size: 0.6rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex; background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  flex: 1; padding: 12px; background: none; border: none;
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+  color: var(--text-2); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── SCAN SECTION ── */
+.scan-section {
+  background: var(--card); margin: 16px;
+  border-radius: 16px; padding: 20px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.scan-title { font-size: 0.9rem; color: var(--text-2); margin-bottom: 16px; }
+.scan-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 10px 20px; border: none; border-radius: 10px;
+  font-family: var(--sans); font-weight: 600; font-size: 0.9rem;
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+  color: white;
+}
+.btn-primary:active { transform: scale(0.96); }
+.btn-secondary {
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:active { background: var(--border); }
+.btn-blue { background: var(--blue); color: white; }
+
+#scanner-container {
+  margin-top: 16px; border-radius: 12px; overflow: hidden;
+  background: #000; display: none;
+}
+#scanner-container.active { display: block; }
+#reader { width: 100%; }
+
+.barcode-row {
+  display: flex; gap: 8px; margin-top: 16px;
+}
+.input {
+  flex: 1; padding: 12px 14px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-family: var(--mono); font-size: 1rem;
+}
+.input:focus { outline: none; border-color: var(--accent); }
+.input::placeholder { color: var(--text-2); }
+
+/* ── FILTERS ── */
+.filters {
+  display: flex; gap: 8px; padding: 12px 16px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.filters::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0; padding: 6px 14px; border-radius: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: 0.8rem; font-weight: 500; color: var(--text-2);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+/* ── CONTENT ── */
+#content { padding: 0 16px 120px; }
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: var(--text-2);
+}
+.empty-icon { font-size: 4rem; margin-bottom: 12px; opacity: 0.5; }
+
+/* ── PRODUCT CARD (result) ── */
+.product-card {
+  background: var(--card); border-radius: 16px;
+  padding: 20px; margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.product-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.product-name { font-size: 1.1rem; font-weight: 600; }
+.product-brand { font-size: 0.85rem; color: var(--text-2); }
+.product-barcode {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--text-2);
+  background: var(--bg); padding: 4px 8px; border-radius: 6px;
+}
+.macro-row {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.macro-item {
+  flex: 1; text-align: center; padding: 10px 6px;
+  background: var(--bg); border-radius: 10px;
+}
+.macro-val { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
+.macro-val.carb { color: var(--yellow); }
+.macro-val.prot { color: var(--green); }
+.macro-val.fat { color: var(--accent-soft); }
+.macro-val.cal { color: var(--purple); }
+.macro-lbl { font-size: 0.65rem; color: var(--text-2); margin-top: 2px; }
+.actions-row { display: flex; gap: 10px; margin-top: 16px; }
+.actions-row .btn { flex: 1; justify-content: center; }
+
+/* ── INVENTORY ITEM ── */
+.inv-item {
+  background: var(--card); border-radius: 14px;
+  padding: 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 14px;
+}
+.inv-info { flex: 1; min-width: 0; }
+.inv-name {
+  font-size: 0.95rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.inv-meta { font-size: 0.75rem; color: var(--text-2); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.loc-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+}
+.loc-Dispensa { background: #ffc85730; color: var(--yellow); }
+.loc-Frigo { background: #4ecca330; color: var(--green); }
+.loc-Freezer { background: #60a5fa30; color: var(--blue); }
+.loc-Sgabuzzino { background: #a78bfa30; color: var(--purple); }
+.exp-badge {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px;
+}
+.exp-expired { background: var(--accent); color: white; }
+.exp-soon { background: var(--yellow); color: #000; }
+.inv-qty { display: flex; align-items: center; gap: 6px; }
+.qty-btn {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 1.2rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.qty-btn:active { background: var(--accent); color: white; border-color: var(--accent); }
+.qty-val {
+  font-family: var(--mono); font-size: 1.1rem; font-weight: 700;
+  min-width: 32px; text-align: center;
+}
+.qty-val.low { color: var(--yellow); }
+.qty-val.zero { color: var(--accent); }
+
+/* ── CATALOG ITEM ── */
+.cat-item {
+  background: var(--card); border-radius: 14px;
+  padding: 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.cat-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.cat-name { font-weight: 600; }
+.cat-brand { font-size: 0.8rem; color: var(--text-2); }
+.cat-barcode { font-family: var(--mono); font-size: 0.65rem; color: var(--text-2); background: var(--bg); padding: 3px 6px; border-radius: 4px; }
+
+/* ── MODAL ── */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 200;
+  align-items: flex-end; justify-content: center;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--bg-2); width: 100%; max-width: 500px;
+  border-radius: 20px 20px 0 0; padding: 20px 20px 36px;
+  max-height: 90vh; overflow-y: auto;
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+.modal-sub { font-size: 0.85rem; color: var(--text-2); margin-bottom: 20px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 0.75rem; color: var(--text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a0a0b0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.qty-row {
+  display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0;
+}
+.qty-big-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg);
+  font-size: 1.5rem; color: var(--text); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.qty-big-btn:active { background: var(--accent); color: white; border-color: var(--accent); }
+.qty-big-num { font-family: var(--mono); font-size: 2rem; font-weight: 700; min-width: 60px; text-align: center; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-actions .btn { flex: 1; justify-content: center; padding: 14px; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card); color: var(--text);
+  padding: 12px 24px; border-radius: 12px;
+  font-size: 0.9rem; font-weight: 500;
+  border: 1px solid var(--border);
+  opacity: 0; transition: all 0.3s; z-index: 500;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: var(--green); }
+.toast.error { border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="load-icon">📦</div>
+  <div class="load-text">Caricamento dispensa...</div>
+</div>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <div class="brand">
+        <div class="brand-icon">📦</div>
+        <div>
+          <div class="brand-name">DISPENSA</div>
+          <div class="brand-sub">Tracker</div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill">
+          <div class="stat-n" id="stat-tot">-</div>
+          <div class="stat-l">Prodotti</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-n warn" id="stat-low">-</div>
+          <div class="stat-l">Bassi</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-n danger" id="stat-exp">-</div>
+          <div class="stat-l">Scaduti</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="inventario" onclick="setTab('inventario')">🏠 Inventario</button>
+    <button class="tab" data-tab="catalogo" onclick="setTab('catalogo')">📚 Catalogo</button>
+  </div>
+
+  <div class="scan-section">
+    <div class="scan-title">Scansiona o inserisci un barcode</div>
+    <div class="scan-row">
+      <button class="btn btn-primary" id="scan-btn" onclick="toggleScanner()">📷 Scansiona</button>
+    </div>
+    <div id="scanner-container">
+      <div id="reader"></div>
+    </div>
+    <div class="barcode-row">
+      <input type="text" class="input" id="barcode-input" placeholder="Barcode..." inputmode="numeric">
+      <button class="btn btn-secondary" onclick="lookupBarcode()">🔍</button>
+    </div>
+  </div>
+
+  <!-- Product Result -->
+  <div id="product-result"></div>
+
+  <!-- Filters -->
+  <div class="filters" id="filters-inventario">
+    <button class="chip active" data-loc="" onclick="setLocation('')">Tutti</button>
+    <button class="chip" data-loc="Dispensa" onclick="setLocation('Dispensa')">Dispensa</button>
+    <button class="chip" data-loc="Frigo" onclick="setLocation('Frigo')">Frigo</button>
+    <button class="chip" data-loc="Freezer" onclick="setLocation('Freezer')">Freezer</button>
+    <button class="chip" data-loc="Sgabuzzino" onclick="setLocation('Sgabuzzino')">Sgabuzzino</button>
+  </div>
+  <div class="filters" id="filters-catalogo" style="display:none">
+    <input type="text" class="input" id="search-catalogo" placeholder="Cerca nel catalogo..." style="flex:1" oninput="renderCatalogo()">
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<!-- ADD TO INVENTORY MODAL -->
+<div class="overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">➕ Aggiungi a inventario</div>
+    <div class="modal-sub" id="add-product-name">-</div>
+    
+    <div class="form-group">
+      <label class="form-label">Quantita</label>
+      <div class="qty-row">
+        <button class="qty-big-btn" onclick="changeAddQty(-1)">−</button>
+        <div class="qty-big-num" id="add-qty">1</div>
+        <button class="qty-big-btn" onclick="changeAddQty(1)">+</button>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Minimo scorta</label>
+        <input type="number" class="input" id="add-min" value="1" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Posizione</label>
+        <select class="input" id="add-pos">
+          <option value="Dispensa">Dispensa</option>
+          <option value="Frigo">Frigo</option>
+          <option value="Freezer">Freezer</option>
+          <option value="Sgabuzzino">Sgabuzzino</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Scadenza</label>
+      <input type="month" class="input" id="add-exp">
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-add')">Annulla</button>
+      <button class="btn btn-primary" onclick="confirmAdd()">Conferma</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PRODUCT MODAL -->
+<div class="overlay" id="modal-new">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Nuovo prodotto</div>
+    <div class="modal-sub" id="new-barcode-display">Barcode: -</div>
+    
+    <div class="form-group">
+      <label class="form-label">Nome prodotto *</label>
+      <input type="text" class="input" id="new-name" placeholder="es. Pasta di semola">
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Marca</label>
+        <input type="text" class="input" id="new-brand" placeholder="es. Barilla">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Formato</label>
+        <input type="text" class="input" id="new-format" placeholder="es. 500g">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Categoria</label>
+      <input type="text" class="input" id="new-cat" placeholder="es. Pasta">
+    </div>
+    
+    <div style="font-size:0.75rem;color:var(--text-2);margin:16px 0 8px">Valori nutrizionali per 100g (opzionali)</div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Carboidrati (g)</label>
+        <input type="number" class="input" id="new-carb" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Proteine (g)</label>
+        <input type="number" class="input" id="new-prot" step="0.1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Grassi (g)</label>
+        <input type="number" class="input" id="new-fat" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Calorie (kcal)</label>
+        <input type="number" class="input" id="new-cal">
+      </div>
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-new')">Annulla</button>
+      <button class="btn btn-primary" onclick="confirmNewProduct()">Avanti →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+const CATALOGO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=0&single=true&output=csv';
+const INVENTARIO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=292158144&single=true&output=csv';
+const SCRIPT_URL = ''; // Google Apps Script URL (da configurare)
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let CATALOGO = [];
+let INVENTARIO = [];
+let currentTab = 'inventario';
+let currentLocation = '';
+let currentBarcode = null;
+let currentProduct = null;
+let addQty = 1;
+let scanner = null;
+let scannerActive = false;
+
+// Local storage for offline changes
+let localChanges = [];
+try { localChanges = JSON.parse(localStorage.getItem('dispensa_changes') || '[]'); } catch(e) {}
+function saveLocalChanges() { localStorage.setItem('dispensa_changes', JSON.stringify(localChanges)); }
+
+// ══════════════════════════════════════════════════════════════
+// CSV PARSING
+// ══════════════════════════════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 1) return [];
+  const headers = parseCSVLine(lines[0]);
+  const items = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = parseCSVLine(lines[i]);
+    if (vals.length < 1) continue;
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
+    items.push(obj);
+  }
+  return items;
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOAD DATA
+// ══════════════════════════════════════════════════════════════
+async function loadData() {
+  try {
+    const [catRes, invRes] = await Promise.all([
+      fetch(CATALOGO_CSV),
+      fetch(INVENTARIO_CSV)
+    ]);
+    
+    const catText = await catRes.text();
+    const invText = await invRes.text();
+    
+    CATALOGO = parseCSV(catText).filter(p => p.Barcode);
+    INVENTARIO = parseCSV(invText).filter(i => i.Barcode);
+    
+    // Apply local changes
+    applyLocalChanges();
+    
+    hideLoading();
+    render();
+  } catch (err) {
+    console.error('Load error:', err);
+    hideLoading();
+    document.getElementById('content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <p>Errore caricamento dati</p>
+        <p style="font-size:0.8rem;margin-top:8px">${err.message}</p>
+      </div>`;
+  }
+}
+
+function applyLocalChanges() {
+  localChanges.forEach(change => {
+    if (change.type === 'add_inventory') {
+      // Check if already exists
+      const existing = INVENTARIO.find(i => i.Barcode === change.data.Barcode && i.Posizione === change.data.Posizione);
+      if (existing) {
+        existing.Quantita = (parseInt(existing.Quantita) || 0) + parseInt(change.data.Quantita);
+      } else {
+        INVENTARIO.push(change.data);
+      }
+    } else if (change.type === 'add_catalogo') {
+      if (!CATALOGO.find(c => c.Barcode === change.data.Barcode)) {
+        CATALOGO.push(change.data);
+      }
+    } else if (change.type === 'update_qty') {
+      const item = INVENTARIO.find(i => i.Barcode === change.barcode && i.Posizione === change.posizione);
+      if (item) item.Quantita = change.newQty;
+    }
+  });
+}
+
+function hideLoading() {
+  const el = document.getElementById('loading');
+  el.classList.add('fade');
+  setTimeout(() => el.style.display = 'none', 400);
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════
+function render() {
+  updateStats();
+  if (currentTab === 'inventario') {
+    renderInventario();
+  } else {
+    renderCatalogo();
+  }
+}
+
+function updateStats() {
+  const total = INVENTARIO.length;
+  const low = INVENTARIO.filter(i => parseInt(i.Quantita) <= parseInt(i.Minimo || 0)).length;
+  const expired = INVENTARIO.filter(i => getExpiryStatus(i.Scadenza) === 'expired').length;
+  
+  document.getElementById('stat-tot').textContent = total;
+  document.getElementById('stat-low').textContent = low;
+  document.getElementById('stat-exp').textContent = expired;
+}
+
+function renderInventario() {
+  document.getElementById('filters-inventario').style.display = 'flex';
+  document.getElementById('filters-catalogo').style.display = 'none';
+  
+  let items = INVENTARIO;
+  if (currentLocation) {
+    items = items.filter(i => i.Posizione === currentLocation);
+  }
+  
+  const el = document.getElementById('content');
+  
+  if (!items.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <p>Nessun prodotto</p>
+        <p style="font-size:0.8rem;margin-top:8px">Scansiona un barcode per iniziare</p>
+      </div>`;
+    return;
+  }
+  
+  el.innerHTML = items.map(item => {
+    const product = CATALOGO.find(p => p.Barcode === item.Barcode) || {};
+    const qty = parseInt(item.Quantita) || 0;
+    const min = parseInt(item.Minimo) || 0;
+    const isLow = qty <= min && qty > 0;
+    const isZero = qty === 0;
+    const expStatus = getExpiryStatus(item.Scadenza);
+    
+    return `
+      <div class="inv-item">
+        <div class="inv-info">
+          <div class="inv-name">${product.Prodotto || item.Barcode}</div>
+          <div class="inv-meta">
+            ${product.Marca ? `<span>${product.Marca}</span>` : ''}
+            ${product.Formato ? `<span>${product.Formato}</span>` : ''}
+            <span class="loc-badge loc-${item.Posizione}">${item.Posizione}</span>
+            ${expStatus === 'expired' ? '<span class="exp-badge exp-expired">SCADUTO</span>' : ''}
+            ${expStatus === 'soon' ? '<span class="exp-badge exp-soon">In scadenza</span>' : ''}
+          </div>
+        </div>
+        <div class="inv-qty">
+          <button class="qty-btn" onclick="updateQty('${item.Barcode}','${item.Posizione}',-1)">−</button>
+          <div class="qty-val ${isZero ? 'zero' : isLow ? 'low' : ''}">${qty}</div>
+          <button class="qty-btn" onclick="updateQty('${item.Barcode}','${item.Posizione}',1)">+</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderCatalogo() {
+  document.getElementById('filters-inventario').style.display = 'none';
+  document.getElementById('filters-catalogo').style.display = 'flex';
+  
+  const search = document.getElementById('search-catalogo').value.toLowerCase();
+  let items = CATALOGO;
+  if (search) {
+    items = items.filter(p => 
+      (p.Prodotto || '').toLowerCase().includes(search) ||
+      (p.Marca || '').toLowerCase().includes(search) ||
+      (p.Barcode || '').includes(search)
+    );
+  }
+  
+  const el = document.getElementById('content');
+  
+  if (!items.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <p>Catalogo vuoto</p>
+      </div>`;
+    return;
+  }
+  
+  el.innerHTML = items.map(p => `
+    <div class="cat-item">
+      <div class="cat-header">
+        <div>
+          <div class="cat-name">${p.Prodotto || '-'}</div>
+          <div class="cat-brand">${[p.Marca, p.Formato].filter(Boolean).join(' · ')}</div>
+        </div>
+        <div class="cat-barcode">${p.Barcode}</div>
+      </div>
+      ${(p.Carboidrati || p.Proteine || p.Grassi) ? `
+        <div class="macro-row" style="margin-top:10px">
+          <div class="macro-item"><div class="macro-val carb">${p.Carboidrati || '-'}g</div><div class="macro-lbl">Carb</div></div>
+          <div class="macro-item"><div class="macro-val prot">${p.Proteine || '-'}g</div><div class="macro-lbl">Prot</div></div>
+          <div class="macro-item"><div class="macro-val fat">${p.Grassi || '-'}g</div><div class="macro-lbl">Grassi</div></div>
+          <div class="macro-item"><div class="macro-val cal">${p.Calorie || '-'}</div><div class="macro-lbl">Kcal</div></div>
+        </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function getExpiryStatus(dateStr) {
+  if (!dateStr || dateStr === 'ND') return null;
+  try {
+    // Handle formats: YYYY-MM, MM/YYYY, YYYY/MM
+    let year, month;
+    if (dateStr.includes('-')) {
+      [year, month] = dateStr.split('-');
+    } else if (dateStr.includes('/')) {
+      const parts = dateStr.split('/');
+      if (parts[0].length === 4) { [year, month] = parts; }
+      else { [month, year] = parts; }
+    } else return null;
+    
+    const expiry = new Date(parseInt(year), parseInt(month) - 1, 28);
+    const today = new Date();
+    const diffDays = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return 'expired';
+    if (diffDays <= 30) return 'soon';
+    return null;
+  } catch (e) { return null; }
+}
+
+// ══════════════════════════════════════════════════════════════
+// TABS & FILTERS
+// ══════════════════════════════════════════════════════════════
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  render();
+}
+
+function setLocation(loc) {
+  currentLocation = loc;
+  document.querySelectorAll('#filters-inventario .chip').forEach(c => c.classList.toggle('active', c.dataset.loc === loc));
+  renderInventario();
+}
+
+// ══════════════════════════════════════════════════════════════
+// BARCODE SCANNER
+// ══════════════════════════════════════════════════════════════
+function toggleScanner() {
+  if (scannerActive) {
+    stopScanner();
+  } else {
+    startScanner();
+  }
+}
+
+async function startScanner() {
+  const container = document.getElementById('scanner-container');
+  const btn = document.getElementById('scan-btn');
+  
+  container.classList.add('active');
+  btn.textContent = '✕ Chiudi';
+  scannerActive = true;
+  
+  try {
+    scanner = new Html5Qrcode('reader');
+    await scanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 100 } },
+      onScanSuccess,
+      () => {}
+    );
+  } catch (err) {
+    console.error('Scanner error:', err);
+    showToast('Errore fotocamera', 'error');
+    stopScanner();
+  }
+}
+
+function stopScanner() {
+  const container = document.getElementById('scanner-container');
+  const btn = document.getElementById('scan-btn');
+  
+  if (scanner) {
+    scanner.stop().catch(() => {});
+    scanner = null;
+  }
+  
+  container.classList.remove('active');
+  btn.textContent = '📷 Scansiona';
+  scannerActive = false;
+}
+
+function onScanSuccess(barcode) {
+  stopScanner();
+  document.getElementById('barcode-input').value = barcode;
+  processBarcode(barcode);
+}
+
+function lookupBarcode() {
+  const barcode = document.getElementById('barcode-input').value.trim();
+  if (!barcode) return;
+  processBarcode(barcode);
+}
+
+document.getElementById('barcode-input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') lookupBarcode();
+});
+
+// ══════════════════════════════════════════════════════════════
+// PROCESS BARCODE
+// ══════════════════════════════════════════════════════════════
+async function processBarcode(barcode) {
+  currentBarcode = barcode;
+  
+  // Check local catalog first
+  const localProduct = CATALOGO.find(p => p.Barcode === barcode);
+  if (localProduct) {
+    showProductResult(localProduct, false);
+    return;
+  }
+  
+  // Try Open Food Facts
+  try {
+    showToast('Ricerca prodotto...', '');
+    const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+    const data = await res.json();
+    
+    if (data.status === 1) {
+      const p = data.product;
+      currentProduct = {
+        Barcode: barcode,
+        Prodotto: p.product_name || '',
+        Marca: p.brands || '',
+        Formato: p.quantity || '',
+        Categoria: p.categories_tags?.[0]?.replace('en:', '') || '',
+        Carboidrati: p.nutriments?.carbohydrates_100g || '',
+        Proteine: p.nutriments?.proteins_100g || '',
+        Grassi: p.nutriments?.fat_100g || '',
+        Calorie: p.nutriments?.['energy-kcal_100g'] || '',
+      };
+      showProductResult(currentProduct, true);
+    } else {
+      // Not found anywhere
+      currentProduct = { Barcode: barcode };
+      showNewProductModal();
+    }
+  } catch (err) {
+    console.error('OFF error:', err);
+    currentProduct = { Barcode: barcode };
+    showNewProductModal();
+  }
+}
+
+function showProductResult(product, isNew) {
+  currentProduct = product;
+  const el = document.getElementById('product-result');
+  
+  el.innerHTML = `
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <div class="product-name">${product.Prodotto || 'Prodotto sconosciuto'}</div>
+          <div class="product-brand">${[product.Marca, product.Formato].filter(Boolean).join(' · ')}</div>
+        </div>
+        <div class="product-barcode">${product.Barcode}</div>
+      </div>
+      ${(product.Carboidrati || product.Proteine || product.Grassi) ? `
+        <div class="macro-row">
+          <div class="macro-item"><div class="macro-val carb">${product.Carboidrati || '-'}g</div><div class="macro-lbl">Carb</div></div>
+          <div class="macro-item"><div class="macro-val prot">${product.Proteine || '-'}g</div><div class="macro-lbl">Prot</div></div>
+          <div class="macro-item"><div class="macro-val fat">${product.Grassi || '-'}g</div><div class="macro-lbl">Grassi</div></div>
+          <div class="macro-item"><div class="macro-val cal">${product.Calorie || '-'}</div><div class="macro-lbl">Kcal</div></div>
+        </div>` : ''}
+      <div class="actions-row">
+        ${isNew ? `<button class="btn btn-secondary" onclick="showNewProductModal()">✏️ Modifica</button>` : ''}
+        <button class="btn btn-primary" onclick="showAddModal()">➕ Aggiungi</button>
+        <button class="btn btn-secondary" onclick="clearResult()">✕</button>
+      </div>
+    </div>`;
+}
+
+function clearResult() {
+  document.getElementById('product-result').innerHTML = '';
+  document.getElementById('barcode-input').value = '';
+  currentProduct = null;
+  currentBarcode = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════════════════════════
+function showAddModal() {
+  if (!currentProduct) return;
+  document.getElementById('add-product-name').textContent = 
+    [currentProduct.Prodotto, currentProduct.Marca].filter(Boolean).join(' · ') || currentProduct.Barcode;
+  addQty = 1;
+  document.getElementById('add-qty').textContent = '1';
+  document.getElementById('add-min').value = '1';
+  document.getElementById('add-pos').value = 'Dispensa';
+  document.getElementById('add-exp').value = '';
+  document.getElementById('modal-add').classList.add('open');
+}
+
+function showNewProductModal() {
+  document.getElementById('new-barcode-display').textContent = 'Barcode: ' + currentBarcode;
+  document.getElementById('new-name').value = currentProduct?.Prodotto || '';
+  document.getElementById('new-brand').value = currentProduct?.Marca || '';
+  document.getElementById('new-format').value = currentProduct?.Formato || '';
+  document.getElementById('new-cat').value = currentProduct?.Categoria || '';
+  document.getElementById('new-carb').value = currentProduct?.Carboidrati || '';
+  document.getElementById('new-prot').value = currentProduct?.Proteine || '';
+  document.getElementById('new-fat').value = currentProduct?.Grassi || '';
+  document.getElementById('new-cal').value = currentProduct?.Calorie || '';
+  document.getElementById('modal-new').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function changeAddQty(delta) {
+  addQty = Math.max(1, addQty + delta);
+  document.getElementById('add-qty').textContent = addQty;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CONFIRM ACTIONS
+// ══════════════════════════════════════════════════════════════
+function confirmNewProduct() {
+  const name = document.getElementById('new-name').value.trim();
+  if (!name) {
+    showToast('Inserisci il nome', 'error');
+    return;
+  }
+  
+  currentProduct = {
+    Barcode: currentBarcode,
+    Prodotto: name,
+    Marca: document.getElementById('new-brand').value.trim(),
+    Formato: document.getElementById('new-format').value.trim(),
+    Categoria: document.getElementById('new-cat').value.trim(),
+    Carboidrati: document.getElementById('new-carb').value,
+    Proteine: document.getElementById('new-prot').value,
+    Grassi: document.getElementById('new-fat').value,
+    Calorie: document.getElementById('new-cal').value,
+  };
+  
+  // Save to local catalog
+  if (!CATALOGO.find(c => c.Barcode === currentBarcode)) {
+    CATALOGO.push(currentProduct);
+    localChanges.push({ type: 'add_catalogo', data: currentProduct, ts: Date.now() });
+    saveLocalChanges();
+  }
+  
+  closeModal('modal-new');
+  showProductResult(currentProduct, false);
+  showAddModal();
+}
+
+function confirmAdd() {
+  if (!currentProduct) return;
+  
+  const scadRaw = document.getElementById('add-exp').value;
+  let scadenza = '';
+  if (scadRaw) {
+    const [y, m] = scadRaw.split('-');
+    scadenza = `${m}/${y}`;
+  }
+  
+  const newItem = {
+    Barcode: currentProduct.Barcode,
+    Quantita: addQty.toString(),
+    Minimo: document.getElementById('add-min').value,
+    Posizione: document.getElementById('add-pos').value,
+    Scadenza: scadenza,
+    DataInserimento: new Date().toISOString().split('T')[0]
+  };
+  
+  // Check if same product in same position exists
+  const existing = INVENTARIO.find(i => i.Barcode === newItem.Barcode && i.Posizione === newItem.Posizione);
+  if (existing) {
+    existing.Quantita = (parseInt(existing.Quantita) || 0) + addQty;
+    localChanges.push({ type: 'update_qty', barcode: newItem.Barcode, posizione: newItem.Posizione, newQty: existing.Quantita, ts: Date.now() });
+  } else {
+    INVENTARIO.push(newItem);
+    localChanges.push({ type: 'add_inventory', data: newItem, ts: Date.now() });
+  }
+  saveLocalChanges();
+  
+  closeModal('modal-add');
+  clearResult();
+  showToast('✓ Aggiunto!', 'success');
+  render();
+}
+
+function updateQty(barcode, posizione, delta) {
+  const item = INVENTARIO.find(i => i.Barcode === barcode && i.Posizione === posizione);
+  if (!item) return;
+  
+  const newQty = Math.max(0, (parseInt(item.Quantita) || 0) + delta);
+  item.Quantita = newQty;
+  
+  localChanges.push({ type: 'update_qty', barcode, posizione, newQty, delta, ts: Date.now() });
+  saveLocalChanges();
+  
+  if (newQty === 0) {
+    // Remove from inventory
+    const idx = INVENTARIO.indexOf(item);
+    if (idx > -1) INVENTARIO.splice(idx, 1);
+    showToast('Prodotto rimosso', '');
+  }
+  
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════════
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODAL CLOSE ON OVERLAY CLICK
+// ══════════════════════════════════════════════════════════════
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+loadData();
+</script>
+</body>
+</html>
