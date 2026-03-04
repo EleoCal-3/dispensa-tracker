@@ -476,7 +476,7 @@ select.input {
 // ══════════════════════════════════════════════════════════════
 const CATALOGO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=0&single=true&output=csv';
 const INVENTARIO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=292158144&single=true&output=csv';
-const SCRIPT_URL = ''; // Google Apps Script URL (da configurare)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz58EH6Y6niUxzGarbrbDA1PmVn1v4uHbasFdRvxUJA7gZbi8TYVdbxObKJw2wftTsRpQ/exec';
 
 // ══════════════════════════════════════════════════════════════
 // STATE
@@ -495,6 +495,18 @@ let scannerActive = false;
 let localChanges = [];
 try { localChanges = JSON.parse(localStorage.getItem('dispensa_changes') || '[]'); } catch(e) {}
 function saveLocalChanges() { localStorage.setItem('dispensa_changes', JSON.stringify(localChanges)); }
+
+// Send to Google Sheets via Apps Script
+function sendToSheet(params) {
+  if (!SCRIPT_URL) return;
+  const url = SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+  // Use iframe method for cross-origin
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
+  document.body.appendChild(iframe);
+  setTimeout(() => document.body.removeChild(iframe), 5000);
+}
 
 // ══════════════════════════════════════════════════════════════
 // CSV PARSING
@@ -952,6 +964,20 @@ function confirmNewProduct() {
     CATALOGO.push(currentProduct);
     localChanges.push({ type: 'add_catalogo', data: currentProduct, ts: Date.now() });
     saveLocalChanges();
+    
+    // Send to Google Sheets
+    sendToSheet({
+      action: 'add_catalogo',
+      Barcode: currentProduct.Barcode,
+      Prodotto: currentProduct.Prodotto,
+      Marca: currentProduct.Marca,
+      Formato: currentProduct.Formato,
+      Categoria: currentProduct.Categoria,
+      Carboidrati: currentProduct.Carboidrati,
+      Proteine: currentProduct.Proteine,
+      Grassi: currentProduct.Grassi,
+      Calorie: currentProduct.Calorie
+    });
   }
   
   closeModal('modal-new');
@@ -983,9 +1009,28 @@ function confirmAdd() {
   if (existing) {
     existing.Quantita = (parseInt(existing.Quantita) || 0) + addQty;
     localChanges.push({ type: 'update_qty', barcode: newItem.Barcode, posizione: newItem.Posizione, newQty: existing.Quantita, ts: Date.now() });
+    
+    // Send update to Google Sheets
+    sendToSheet({
+      action: 'update_qty',
+      Barcode: newItem.Barcode,
+      Posizione: newItem.Posizione,
+      Quantita: existing.Quantita
+    });
   } else {
     INVENTARIO.push(newItem);
     localChanges.push({ type: 'add_inventory', data: newItem, ts: Date.now() });
+    
+    // Send to Google Sheets
+    sendToSheet({
+      action: 'add_inventario',
+      Barcode: newItem.Barcode,
+      Quantita: newItem.Quantita,
+      Minimo: newItem.Minimo,
+      Posizione: newItem.Posizione,
+      Scadenza: newItem.Scadenza,
+      DataInserimento: newItem.DataInserimento
+    });
   }
   saveLocalChanges();
   
@@ -1004,6 +1049,14 @@ function updateQty(barcode, posizione, delta) {
   
   localChanges.push({ type: 'update_qty', barcode, posizione, newQty, delta, ts: Date.now() });
   saveLocalChanges();
+  
+  // Send update to Google Sheets
+  sendToSheet({
+    action: 'update_qty',
+    Barcode: barcode,
+    Posizione: posizione,
+    Quantita: newQty
+  });
   
   if (newQty === 0) {
     // Remove from inventory
