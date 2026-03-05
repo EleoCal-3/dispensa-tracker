@@ -33,24 +33,21 @@ body {
 }
 .container { max-width: 500px; margin: 0 auto; min-height: 100vh; }
 
-/* ── LOADING ── */
+/* LOADING */
 #loading {
-  position: fixed; inset: 0;
-  background: var(--bg);
+  position: fixed; inset: 0; background: var(--bg);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  z-index: 999; gap: 16px;
-  transition: opacity 0.4s;
+  z-index: 999; gap: 16px; transition: opacity 0.4s;
 }
 #loading.fade { opacity: 0; pointer-events: none; }
 .load-icon { font-size: 48px; animation: pulse 1.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 .load-text { font-family: var(--mono); font-size: 12px; color: var(--text-2); letter-spacing: 0.1em; }
 
-/* ── HEADER ── */
+/* HEADER */
 header {
-  background: var(--bg-2);
-  padding: 16px 20px;
+  background: var(--bg-2); padding: 16px 20px;
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 100;
 }
@@ -64,35 +61,17 @@ header {
 }
 .brand-sub { font-size: 0.7rem; color: var(--text-2); }
 .header-stats { display: flex; gap: 8px; }
-.stat-pill {
-  background: rgba(255,255,255,0.1); border-radius: 8px;
-  padding: 4px 10px; text-align: center;
-}
+.stat-pill { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 4px 10px; text-align: center; }
 .stat-n { font-family: var(--mono); font-size: 1rem; font-weight: 700; }
 .stat-n.warn { color: var(--yellow); }
 .stat-n.danger { color: var(--accent); }
 .stat-l { font-size: 0.6rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; }
 
-/* ── TABS ── */
-.tabs {
-  display: flex; background: var(--bg-2);
-  border-bottom: 1px solid var(--border);
-}
-.tab {
-  flex: 1; padding: 12px; background: none; border: none;
-  font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
-  color: var(--text-2); cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* ── SCAN SECTION ── */
+/* SCAN SECTION */
 .scan-section {
   background: var(--card); margin: 16px;
   border-radius: 16px; padding: 20px;
-  border: 1px solid var(--border);
-  text-align: center;
+  border: 1px solid var(--border); text-align: center;
 }
 .scan-title { font-size: 0.9rem; color: var(--text-2); margin-bottom: 16px; }
 .scan-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -107,12 +86,8 @@ header {
   color: white;
 }
 .btn-primary:active { transform: scale(0.96); }
-.btn-secondary {
-  background: var(--bg); color: var(--text);
-  border: 1px solid var(--border);
-}
+.btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
 .btn-secondary:active { background: var(--border); }
-.btn-blue { background: var(--blue); color: white; }
 
 #scanner-container {
   margin-top: 16px; border-radius: 12px; overflow: hidden;
@@ -121,9 +96,7 @@ header {
 #scanner-container.active { display: block; }
 #reader { width: 100%; }
 
-.barcode-row {
-  display: flex; gap: 8px; margin-top: 16px;
-}
+.barcode-row { display: flex; gap: 8px; margin-top: 16px; }
 .input {
   flex: 1; padding: 12px 14px;
   background: var(--bg); border: 1px solid var(--border);
@@ -133,7 +106,7 @@ header {
 .input:focus { outline: none; border-color: var(--accent); }
 .input::placeholder { color: var(--text-2); }
 
-/* ── FILTERS ── */
+/* FILTERS */
 .filters {
   display: flex; gap: 8px; padding: 12px 16px;
   overflow-x: auto; scrollbar-width: none;
@@ -147,15 +120,13 @@ header {
 }
 .chip.active { background: var(--accent); border-color: var(--accent); color: white; }
 
-/* ── CONTENT ── */
+/* CONTENT */
 #content { padding: 0 16px 120px; }
 
-.empty-state {
-  text-align: center; padding: 60px 20px; color: var(--text-2);
-}
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-2); }
 .empty-icon { font-size: 4rem; margin-bottom: 12px; opacity: 0.5; }
 
-/* ── PRODUCT CARD (result) ── */
+/* PRODUCT CARD */
 .product-card {
   background: var(--card); border-radius: 16px;
   padding: 20px; margin-bottom: 16px;
@@ -168,13 +139,8 @@ header {
   font-family: var(--mono); font-size: 0.7rem; color: var(--text-2);
   background: var(--bg); padding: 4px 8px; border-radius: 6px;
 }
-.macro-row {
-  display: flex; gap: 8px; margin-top: 12px;
-}
-.macro-item {
-  flex: 1; text-align: center; padding: 10px 6px;
-  background: var(--bg); border-radius: 10px;
-}
+.macro-row { display: flex; gap: 8px; margin-top: 12px; }
+.macro-item { flex: 1; text-align: center; padding: 10px 6px; background: var(--bg); border-radius: 10px; }
 .macro-val { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
 .macro-val.carb { color: var(--yellow); }
 .macro-val.prot { color: var(--green); }
@@ -184,7 +150,7 @@ header {
 .actions-row { display: flex; gap: 10px; margin-top: 16px; }
 .actions-row .btn { flex: 1; justify-content: center; }
 
-/* ── INVENTORY ITEM ── */
+/* INVENTORY ITEM */
 .inv-item {
   background: var(--card); border-radius: 14px;
   padding: 14px; margin-bottom: 10px;
@@ -205,10 +171,13 @@ header {
 .loc-Frigo { background: #4ecca330; color: var(--green); }
 .loc-Freezer { background: #60a5fa30; color: var(--blue); }
 .loc-Sgabuzzino { background: #a78bfa30; color: var(--purple); }
-.exp-badge {
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
-  padding: 2px 6px; border-radius: 4px;
+.type-badge {
+  display: inline-block; padding: 2px 6px; border-radius: 4px;
+  font-size: 0.6rem; font-weight: 600;
 }
+.type-occasionale { background: rgba(255,255,255,0.1); color: var(--text-2); }
+.type-riordino { background: var(--yellow); color: #000; }
+.exp-badge { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
 .exp-expired { background: var(--accent); color: white; }
 .exp-soon { background: var(--yellow); color: #000; }
 .inv-qty { display: flex; align-items: center; gap: 6px; }
@@ -226,18 +195,7 @@ header {
 .qty-val.low { color: var(--yellow); }
 .qty-val.zero { color: var(--accent); }
 
-/* ── CATALOG ITEM ── */
-.cat-item {
-  background: var(--card); border-radius: 14px;
-  padding: 14px; margin-bottom: 10px;
-  border: 1px solid var(--border);
-}
-.cat-header { display: flex; justify-content: space-between; align-items: flex-start; }
-.cat-name { font-weight: 600; }
-.cat-brand { font-size: 0.8rem; color: var(--text-2); }
-.cat-barcode { font-family: var(--mono); font-size: 0.65rem; color: var(--text-2); background: var(--bg); padding: 3px 6px; border-radius: 4px; }
-
-/* ── MODAL ── */
+/* MODAL */
 .overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.7); z-index: 200;
@@ -260,13 +218,9 @@ header {
 select.input {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a0a0b0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
 }
-.qty-row {
-  display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0;
-}
+.qty-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0; }
 .qty-big-btn {
   width: 50px; height: 50px; border-radius: 50%;
   border: 1px solid var(--border); background: var(--bg);
@@ -278,7 +232,7 @@ select.input {
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .modal-actions .btn { flex: 1; justify-content: center; padding: 14px; }
 
-/* ── TOAST ── */
+/* TOAST */
 .toast {
   position: fixed; bottom: 30px; left: 50%;
   transform: translateX(-50%) translateY(20px);
@@ -318,7 +272,7 @@ select.input {
         </div>
         <div class="stat-pill">
           <div class="stat-n warn" id="stat-low">-</div>
-          <div class="stat-l">Bassi</div>
+          <div class="stat-l">Riordino</div>
         </div>
         <div class="stat-pill">
           <div class="stat-n danger" id="stat-exp">-</div>
@@ -327,11 +281,6 @@ select.input {
       </div>
     </div>
   </header>
-
-  <div class="tabs">
-    <button class="tab active" data-tab="inventario" onclick="setTab('inventario')">🏠 Inventario</button>
-    <button class="tab" data-tab="catalogo" onclick="setTab('catalogo')">📚 Catalogo</button>
-  </div>
 
   <div class="scan-section">
     <div class="scan-title">Scansiona o inserisci un barcode</div>
@@ -347,30 +296,42 @@ select.input {
     </div>
   </div>
 
-  <!-- Product Result -->
   <div id="product-result"></div>
 
-  <!-- Filters -->
-  <div class="filters" id="filters-inventario">
-    <button class="chip active" data-loc="" onclick="setLocation('')">Tutti</button>
-    <button class="chip" data-loc="Dispensa" onclick="setLocation('Dispensa')">Dispensa</button>
-    <button class="chip" data-loc="Frigo" onclick="setLocation('Frigo')">Frigo</button>
-    <button class="chip" data-loc="Freezer" onclick="setLocation('Freezer')">Freezer</button>
-    <button class="chip" data-loc="Sgabuzzino" onclick="setLocation('Sgabuzzino')">Sgabuzzino</button>
-  </div>
-  <div class="filters" id="filters-catalogo" style="display:none">
-    <input type="text" class="input" id="search-catalogo" placeholder="Cerca nel catalogo..." style="flex:1" oninput="renderCatalogo()">
+  <div class="filters" id="filters">
+    <button class="chip active" data-f="tutti" onclick="setFilter('tutti')">Tutti</button>
+    <button class="chip" data-f="riordino" onclick="setFilter('riordino')">🛒 Da riordinare</button>
+    <button class="chip" data-f="Dispensa" onclick="setFilter('Dispensa')">Dispensa</button>
+    <button class="chip" data-f="Frigo" onclick="setFilter('Frigo')">Frigo</button>
+    <button class="chip" data-f="Freezer" onclick="setFilter('Freezer')">Freezer</button>
+    <button class="chip" data-f="Sgabuzzino" onclick="setFilter('Sgabuzzino')">Sgabuzzino</button>
   </div>
 
   <div id="content"></div>
 </div>
 
-<!-- ADD TO INVENTORY MODAL -->
+<!-- ADD MODAL -->
 <div class="overlay" id="modal-add">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">➕ Aggiungi a inventario</div>
-    <div class="modal-sub" id="add-product-name">-</div>
+    <div class="modal-title" id="modal-add-title">➕ Aggiungi prodotto</div>
+    <div class="modal-sub" id="add-barcode-display">Barcode: -</div>
+    
+    <div class="form-group">
+      <label class="form-label">Nome prodotto *</label>
+      <input type="text" class="input" id="add-name" placeholder="es. Pasta di semola">
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Marca</label>
+        <input type="text" class="input" id="add-brand" placeholder="es. Barilla">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Formato</label>
+        <input type="text" class="input" id="add-format" placeholder="es. 500g">
+      </div>
+    </div>
     
     <div class="form-group">
       <label class="form-label">Quantita</label>
@@ -397,72 +358,46 @@ select.input {
       </div>
     </div>
     
-    <div class="form-group">
-      <label class="form-label">Scadenza</label>
-      <input type="month" class="input" id="add-exp">
-    </div>
-    
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal('modal-add')">Annulla</button>
-      <button class="btn btn-primary" onclick="confirmAdd()">Conferma</button>
-    </div>
-  </div>
-</div>
-
-<!-- NEW PRODUCT MODAL -->
-<div class="overlay" id="modal-new">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">✏️ Nuovo prodotto</div>
-    <div class="modal-sub" id="new-barcode-display">Barcode: -</div>
-    
-    <div class="form-group">
-      <label class="form-label">Nome prodotto *</label>
-      <input type="text" class="input" id="new-name" placeholder="es. Pasta di semola">
-    </div>
-    
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Marca</label>
-        <input type="text" class="input" id="new-brand" placeholder="es. Barilla">
+        <label class="form-label">Scadenza</label>
+        <input type="month" class="input" id="add-exp">
       </div>
       <div class="form-group">
-        <label class="form-label">Formato</label>
-        <input type="text" class="input" id="new-format" placeholder="es. 500g">
+        <label class="form-label">Tipo</label>
+        <select class="input" id="add-type">
+          <option value="standard">Standard</option>
+          <option value="occasionale">Occasionale</option>
+        </select>
       </div>
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label">Categoria</label>
-      <input type="text" class="input" id="new-cat" placeholder="es. Pasta">
     </div>
     
     <div style="font-size:0.75rem;color:var(--text-2);margin:16px 0 8px">Valori nutrizionali per 100g (opzionali)</div>
     
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Carboidrati (g)</label>
-        <input type="number" class="input" id="new-carb" step="0.1">
+        <label class="form-label">Carboidrati</label>
+        <input type="number" class="input" id="add-carb" step="0.1" placeholder="g">
       </div>
       <div class="form-group">
-        <label class="form-label">Proteine (g)</label>
-        <input type="number" class="input" id="new-prot" step="0.1">
+        <label class="form-label">Proteine</label>
+        <input type="number" class="input" id="add-prot" step="0.1" placeholder="g">
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Grassi (g)</label>
-        <input type="number" class="input" id="new-fat" step="0.1">
+        <label class="form-label">Grassi</label>
+        <input type="number" class="input" id="add-fat" step="0.1" placeholder="g">
       </div>
       <div class="form-group">
-        <label class="form-label">Calorie (kcal)</label>
-        <input type="number" class="input" id="new-cal">
+        <label class="form-label">Calorie</label>
+        <input type="number" class="input" id="add-cal" placeholder="kcal">
       </div>
     </div>
     
     <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal('modal-new')">Annulla</button>
-      <button class="btn btn-primary" onclick="confirmNewProduct()">Avanti →</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-primary" onclick="confirmAdd()">Conferma</button>
     </div>
   </div>
 </div>
@@ -474,39 +409,19 @@ select.input {
 // ══════════════════════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════════════════════
-const CATALOGO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=0&single=true&output=csv';
 const INVENTARIO_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSi4KnG5gSOlcbAhaLmZsi3SkAG-mnirvqX3fRcErV8jO-tVS0i1924YhrMHWoD5rQzeywzfkllFdTF/pub?gid=292158144&single=true&output=csv';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz58EH6Y6niUxzGarbrbDA1PmVn1v4uHbasFdRvxUJA7gZbi8TYVdbxObKJw2wftTsRpQ/exec';
 
 // ══════════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════════
-let CATALOGO = [];
 let INVENTARIO = [];
-let currentTab = 'inventario';
-let currentLocation = '';
+let currentFilter = 'tutti';
 let currentBarcode = null;
-let currentProduct = null;
+let currentProduct = null; // existing product if found
 let addQty = 1;
 let scanner = null;
 let scannerActive = false;
-
-// Local storage for offline changes
-let localChanges = [];
-try { localChanges = JSON.parse(localStorage.getItem('dispensa_changes') || '[]'); } catch(e) {}
-function saveLocalChanges() { localStorage.setItem('dispensa_changes', JSON.stringify(localChanges)); }
-
-// Send to Google Sheets via Apps Script
-function sendToSheet(params) {
-  if (!SCRIPT_URL) return;
-  const url = SCRIPT_URL + '?' + new URLSearchParams(params).toString();
-  // Use iframe method for cross-origin
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
-  document.body.appendChild(iframe);
-  setTimeout(() => document.body.removeChild(iframe), 5000);
-}
 
 // ══════════════════════════════════════════════════════════════
 // CSV PARSING
@@ -546,20 +461,9 @@ function parseCSVLine(line) {
 // ══════════════════════════════════════════════════════════════
 async function loadData() {
   try {
-    const [catRes, invRes] = await Promise.all([
-      fetch(CATALOGO_CSV),
-      fetch(INVENTARIO_CSV)
-    ]);
-    
-    const catText = await catRes.text();
-    const invText = await invRes.text();
-    
-    CATALOGO = parseCSV(catText).filter(p => p.Barcode);
-    INVENTARIO = parseCSV(invText).filter(i => i.Barcode);
-    
-    // Apply local changes
-    applyLocalChanges();
-    
+    const res = await fetch(INVENTARIO_CSV);
+    const text = await res.text();
+    INVENTARIO = parseCSV(text).filter(i => i.Barcode);
     hideLoading();
     render();
   } catch (err) {
@@ -574,27 +478,6 @@ async function loadData() {
   }
 }
 
-function applyLocalChanges() {
-  localChanges.forEach(change => {
-    if (change.type === 'add_inventory') {
-      // Check if already exists
-      const existing = INVENTARIO.find(i => i.Barcode === change.data.Barcode && i.Posizione === change.data.Posizione);
-      if (existing) {
-        existing.Quantita = (parseInt(existing.Quantita) || 0) + parseInt(change.data.Quantita);
-      } else {
-        INVENTARIO.push(change.data);
-      }
-    } else if (change.type === 'add_catalogo') {
-      if (!CATALOGO.find(c => c.Barcode === change.data.Barcode)) {
-        CATALOGO.push(change.data);
-      }
-    } else if (change.type === 'update_qty') {
-      const item = INVENTARIO.find(i => i.Barcode === change.barcode && i.Posizione === change.posizione);
-      if (item) item.Quantita = change.newQty;
-    }
-  });
-}
-
 function hideLoading() {
   const el = document.getElementById('loading');
   el.classList.add('fade');
@@ -602,20 +485,34 @@ function hideLoading() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// SEND TO GOOGLE SHEETS
+// ══════════════════════════════════════════════════════════════
+function sendToSheet(params) {
+  if (!SCRIPT_URL) return;
+  const url = SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
+  document.body.appendChild(iframe);
+  setTimeout(() => document.body.removeChild(iframe), 5000);
+}
+
+// ══════════════════════════════════════════════════════════════
 // RENDER
 // ══════════════════════════════════════════════════════════════
 function render() {
   updateStats();
-  if (currentTab === 'inventario') {
-    renderInventario();
-  } else {
-    renderCatalogo();
-  }
+  renderInventario();
 }
 
 function updateStats() {
   const total = INVENTARIO.length;
-  const low = INVENTARIO.filter(i => parseInt(i.Quantita) <= parseInt(i.Minimo || 0)).length;
+  const low = INVENTARIO.filter(i => {
+    const qty = parseInt(i.Quantita) || 0;
+    const min = parseInt(i.Minimo) || 0;
+    const tipo = (i.Tipo || 'standard').toLowerCase();
+    return tipo === 'standard' && qty <= min;
+  }).length;
   const expired = INVENTARIO.filter(i => getExpiryStatus(i.Scadenza) === 'expired').length;
   
   document.getElementById('stat-tot').textContent = total;
@@ -624,12 +521,17 @@ function updateStats() {
 }
 
 function renderInventario() {
-  document.getElementById('filters-inventario').style.display = 'flex';
-  document.getElementById('filters-catalogo').style.display = 'none';
-  
   let items = INVENTARIO;
-  if (currentLocation) {
-    items = items.filter(i => i.Posizione === currentLocation);
+  
+  if (currentFilter === 'riordino') {
+    items = items.filter(i => {
+      const qty = parseInt(i.Quantita) || 0;
+      const min = parseInt(i.Minimo) || 0;
+      const tipo = (i.Tipo || 'standard').toLowerCase();
+      return tipo === 'standard' && qty <= min;
+    });
+  } else if (currentFilter !== 'tutti') {
+    items = items.filter(i => i.Posizione === currentFilter);
   }
   
   const el = document.getElementById('content');
@@ -645,83 +547,40 @@ function renderInventario() {
   }
   
   el.innerHTML = items.map(item => {
-    const product = CATALOGO.find(p => p.Barcode === item.Barcode) || {};
     const qty = parseInt(item.Quantita) || 0;
     const min = parseInt(item.Minimo) || 0;
-    const isLow = qty <= min && qty > 0;
+    const tipo = (item.Tipo || 'standard').toLowerCase();
+    const isLow = tipo === 'standard' && qty <= min && qty > 0;
     const isZero = qty === 0;
+    const needsReorder = tipo === 'standard' && qty <= min;
     const expStatus = getExpiryStatus(item.Scadenza);
     
     return `
       <div class="inv-item">
         <div class="inv-info">
-          <div class="inv-name">${product.Prodotto || item.Barcode}</div>
+          <div class="inv-name">${item.Prodotto || item.Barcode}</div>
           <div class="inv-meta">
-            ${product.Marca ? `<span>${product.Marca}</span>` : ''}
-            ${product.Formato ? `<span>${product.Formato}</span>` : ''}
-            <span class="loc-badge loc-${item.Posizione}">${item.Posizione}</span>
+            ${item.Marca ? `<span>${item.Marca}</span>` : ''}
+            ${item.Formato ? `<span>${item.Formato}</span>` : ''}
+            <span class="loc-badge loc-${item.Posizione}">${item.Posizione || '?'}</span>
+            ${tipo === 'occasionale' ? '<span class="type-badge type-occasionale">occasionale</span>' : ''}
+            ${needsReorder && tipo === 'standard' ? '<span class="type-badge type-riordino">riordino</span>' : ''}
             ${expStatus === 'expired' ? '<span class="exp-badge exp-expired">SCADUTO</span>' : ''}
             ${expStatus === 'soon' ? '<span class="exp-badge exp-soon">In scadenza</span>' : ''}
           </div>
         </div>
         <div class="inv-qty">
-          <button class="qty-btn" onclick="updateQty('${item.Barcode}','${item.Posizione}',-1)">−</button>
+          <button class="qty-btn" onclick="updateQty('${item.Barcode}',-1)">−</button>
           <div class="qty-val ${isZero ? 'zero' : isLow ? 'low' : ''}">${qty}</div>
-          <button class="qty-btn" onclick="updateQty('${item.Barcode}','${item.Posizione}',1)">+</button>
+          <button class="qty-btn" onclick="updateQty('${item.Barcode}',1)">+</button>
         </div>
       </div>`;
   }).join('');
 }
 
-function renderCatalogo() {
-  document.getElementById('filters-inventario').style.display = 'none';
-  document.getElementById('filters-catalogo').style.display = 'flex';
-  
-  const search = document.getElementById('search-catalogo').value.toLowerCase();
-  let items = CATALOGO;
-  if (search) {
-    items = items.filter(p => 
-      (p.Prodotto || '').toLowerCase().includes(search) ||
-      (p.Marca || '').toLowerCase().includes(search) ||
-      (p.Barcode || '').includes(search)
-    );
-  }
-  
-  const el = document.getElementById('content');
-  
-  if (!items.length) {
-    el.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📚</div>
-        <p>Catalogo vuoto</p>
-      </div>`;
-    return;
-  }
-  
-  el.innerHTML = items.map(p => `
-    <div class="cat-item">
-      <div class="cat-header">
-        <div>
-          <div class="cat-name">${p.Prodotto || '-'}</div>
-          <div class="cat-brand">${[p.Marca, p.Formato].filter(Boolean).join(' · ')}</div>
-        </div>
-        <div class="cat-barcode">${p.Barcode}</div>
-      </div>
-      ${(p.Carboidrati || p.Proteine || p.Grassi) ? `
-        <div class="macro-row" style="margin-top:10px">
-          <div class="macro-item"><div class="macro-val carb">${p.Carboidrati || '-'}g</div><div class="macro-lbl">Carb</div></div>
-          <div class="macro-item"><div class="macro-val prot">${p.Proteine || '-'}g</div><div class="macro-lbl">Prot</div></div>
-          <div class="macro-item"><div class="macro-val fat">${p.Grassi || '-'}g</div><div class="macro-lbl">Grassi</div></div>
-          <div class="macro-item"><div class="macro-val cal">${p.Calorie || '-'}</div><div class="macro-lbl">Kcal</div></div>
-        </div>` : ''}
-    </div>
-  `).join('');
-}
-
 function getExpiryStatus(dateStr) {
   if (!dateStr || dateStr === 'ND') return null;
   try {
-    // Handle formats: YYYY-MM, MM/YYYY, YYYY/MM
     let year, month;
     if (dateStr.includes('-')) {
       [year, month] = dateStr.split('-');
@@ -742,17 +601,11 @@ function getExpiryStatus(dateStr) {
 }
 
 // ══════════════════════════════════════════════════════════════
-// TABS & FILTERS
+// FILTERS
 // ══════════════════════════════════════════════════════════════
-function setTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  render();
-}
-
-function setLocation(loc) {
-  currentLocation = loc;
-  document.querySelectorAll('#filters-inventario .chip').forEach(c => c.classList.toggle('active', c.dataset.loc === loc));
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('#filters .chip').forEach(c => c.classList.toggle('active', c.dataset.f === f));
   renderInventario();
 }
 
@@ -760,17 +613,13 @@ function setLocation(loc) {
 // BARCODE SCANNER
 // ══════════════════════════════════════════════════════════════
 function toggleScanner() {
-  if (scannerActive) {
-    stopScanner();
-  } else {
-    startScanner();
-  }
+  if (scannerActive) { stopScanner(); }
+  else { startScanner(); }
 }
 
 async function startScanner() {
   const container = document.getElementById('scanner-container');
   const btn = document.getElementById('scan-btn');
-  
   container.classList.add('active');
   btn.textContent = '✕ Chiudi';
   scannerActive = true;
@@ -793,12 +642,7 @@ async function startScanner() {
 function stopScanner() {
   const container = document.getElementById('scanner-container');
   const btn = document.getElementById('scan-btn');
-  
-  if (scanner) {
-    scanner.stop().catch(() => {});
-    scanner = null;
-  }
-  
+  if (scanner) { scanner.stop().catch(() => {}); scanner = null; }
   container.classList.remove('active');
   btn.textContent = '📷 Scansiona';
   scannerActive = false;
@@ -826,16 +670,17 @@ document.getElementById('barcode-input').addEventListener('keypress', (e) => {
 async function processBarcode(barcode) {
   currentBarcode = barcode;
   
-  // Check local catalog first
-  const localProduct = CATALOGO.find(p => p.Barcode === barcode);
-  if (localProduct) {
-    showProductResult(localProduct, false);
+  // Check if already in inventory
+  const existing = INVENTARIO.find(p => p.Barcode === barcode);
+  if (existing) {
+    currentProduct = existing;
+    showAddModal(true);
     return;
   }
   
   // Try Open Food Facts
   try {
-    showToast('Ricerca prodotto...', '');
+    showToast('Ricerca prodotto...');
     const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
     const data = await res.json();
     
@@ -846,51 +691,135 @@ async function processBarcode(barcode) {
         Prodotto: p.product_name || '',
         Marca: p.brands || '',
         Formato: p.quantity || '',
-        Categoria: p.categories_tags?.[0]?.replace('en:', '') || '',
         Carboidrati: p.nutriments?.carbohydrates_100g || '',
         Proteine: p.nutriments?.proteins_100g || '',
         Grassi: p.nutriments?.fat_100g || '',
         Calorie: p.nutriments?.['energy-kcal_100g'] || '',
       };
-      showProductResult(currentProduct, true);
     } else {
-      // Not found anywhere
       currentProduct = { Barcode: barcode };
-      showNewProductModal();
     }
+    showAddModal(false);
   } catch (err) {
     console.error('OFF error:', err);
     currentProduct = { Barcode: barcode };
-    showNewProductModal();
+    showAddModal(false);
   }
 }
 
-function showProductResult(product, isNew) {
-  currentProduct = product;
-  const el = document.getElementById('product-result');
+// ══════════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════════
+function showAddModal(isExisting) {
+  document.getElementById('modal-add-title').textContent = isExisting ? '📝 Modifica prodotto' : '➕ Aggiungi prodotto';
+  document.getElementById('add-barcode-display').textContent = 'Barcode: ' + currentBarcode;
   
-  el.innerHTML = `
-    <div class="product-card">
-      <div class="product-header">
-        <div>
-          <div class="product-name">${product.Prodotto || 'Prodotto sconosciuto'}</div>
-          <div class="product-brand">${[product.Marca, product.Formato].filter(Boolean).join(' · ')}</div>
-        </div>
-        <div class="product-barcode">${product.Barcode}</div>
-      </div>
-      ${(product.Carboidrati || product.Proteine || product.Grassi) ? `
-        <div class="macro-row">
-          <div class="macro-item"><div class="macro-val carb">${product.Carboidrati || '-'}g</div><div class="macro-lbl">Carb</div></div>
-          <div class="macro-item"><div class="macro-val prot">${product.Proteine || '-'}g</div><div class="macro-lbl">Prot</div></div>
-          <div class="macro-item"><div class="macro-val fat">${product.Grassi || '-'}g</div><div class="macro-lbl">Grassi</div></div>
-          <div class="macro-item"><div class="macro-val cal">${product.Calorie || '-'}</div><div class="macro-lbl">Kcal</div></div>
-        </div>` : ''}
-      <div class="actions-row">
-        ${isNew ? `<button class="btn btn-secondary" onclick="showNewProductModal()">✏️ Modifica</button>` : ''}
-        <button class="btn btn-primary" onclick="showAddModal()">➕ Aggiungi</button>
-        <button class="btn btn-secondary" onclick="clearResult()">✕</button>
-      </div>
-    </div>`;
+  document.getElementById('add-name').value = currentProduct?.Prodotto || '';
+  document.getElementById('add-brand').value = currentProduct?.Marca || '';
+  document.getElementById('add-format').value = currentProduct?.Formato || '';
+  
+  addQty = isExisting ? (parseInt(currentProduct?.Quantita) || 0) : 1;
+  document.getElementById('add-qty').textContent = addQty;
+  
+  document.getElementById('add-min').value = currentProduct?.Minimo || '1';
+  document.getElementById('add-pos').value = currentProduct?.Posizione || 'Dispensa';
+  document.getElementById('add-type').value = currentProduct?.Tipo || 'standard';
+  
+  // Scadenza
+  if (currentProduct?.Scadenza) {
+    let scad = currentProduct.Scadenza;
+    if (scad.includes('/')) {
+      const parts = scad.split('/');
+      if (parts[0].length === 2) scad = parts[1] + '-' + parts[0]; // MM/YYYY -> YYYY-MM
+    }
+    document.getElementById('add-exp').value = scad;
+  } else {
+    document.getElementById('add-exp').value = '';
+  }
+  
+  document.getElementById('add-carb').value = currentProduct?.Carboidrati || '';
+  document.getElementById('add-prot').value = currentProduct?.Proteine || '';
+  document.getElementById('add-fat').value = currentProduct?.Grassi || '';
+  document.getElementById('add-cal').value = currentProduct?.Calorie || '';
+  
+  document.getElementById('modal-add').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-add').classList.remove('open');
+}
+
+function changeAddQty(delta) {
+  addQty = Math.max(0, addQty + delta);
+  document.getElementById('add-qty').textContent = addQty;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CONFIRM ADD / UPDATE
+// ══════════════════════════════════════════════════════════════
+function confirmAdd() {
+  const name = document.getElementById('add-name').value.trim();
+  if (!name) {
+    showToast('Inserisci il nome', 'error');
+    return;
+  }
+  
+  const scadRaw = document.getElementById('add-exp').value;
+  let scadenza = '';
+  if (scadRaw) {
+    const [y, m] = scadRaw.split('-');
+    scadenza = m + '/' + y;
+  }
+  
+  const newData = {
+    Barcode: currentBarcode,
+    Prodotto: name,
+    Marca: document.getElementById('add-brand').value.trim(),
+    Formato: document.getElementById('add-format').value.trim(),
+    Quantita: addQty,
+    Minimo: document.getElementById('add-min').value || '1',
+    Posizione: document.getElementById('add-pos').value,
+    Scadenza: scadenza,
+    Carboidrati: document.getElementById('add-carb').value,
+    Proteine: document.getElementById('add-prot').value,
+    Grassi: document.getElementById('add-fat').value,
+    Calorie: document.getElementById('add-cal').value,
+    Tipo: document.getElementById('add-type').value
+  };
+  
+  // Check if exists
+  const existingIdx = INVENTARIO.findIndex(i => i.Barcode === currentBarcode);
+  if (existingIdx >= 0) {
+    // Update local
+    INVENTARIO[existingIdx] = newData;
+    // Send update to sheet
+    sendToSheet({ action: 'update_qty', Barcode: currentBarcode, Quantita: addQty });
+  } else {
+    // Add new
+    INVENTARIO.push(newData);
+    // Send add to sheet
+    sendToSheet({
+      action: 'add',
+      Barcode: newData.Barcode,
+      Prodotto: newData.Prodotto,
+      Marca: newData.Marca,
+      Formato: newData.Formato,
+      Quantita: newData.Quantita,
+      Minimo: newData.Minimo,
+      Posizione: newData.Posizione,
+      Scadenza: newData.Scadenza,
+      Carboidrati: newData.Carboidrati,
+      Proteine: newData.Proteine,
+      Grassi: newData.Grassi,
+      Calorie: newData.Calorie,
+      Tipo: newData.Tipo
+    });
+  }
+  
+  closeModal();
+  clearResult();
+  showToast('✓ Salvato!', 'success');
+  render();
 }
 
 function clearResult() {
@@ -901,169 +830,17 @@ function clearResult() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// MODALS
+// UPDATE QTY (+/-)
 // ══════════════════════════════════════════════════════════════
-function showAddModal() {
-  if (!currentProduct) return;
-  document.getElementById('add-product-name').textContent = 
-    [currentProduct.Prodotto, currentProduct.Marca].filter(Boolean).join(' · ') || currentProduct.Barcode;
-  addQty = 1;
-  document.getElementById('add-qty').textContent = '1';
-  document.getElementById('add-min').value = '1';
-  document.getElementById('add-pos').value = 'Dispensa';
-  document.getElementById('add-exp').value = '';
-  document.getElementById('modal-add').classList.add('open');
-}
-
-function showNewProductModal() {
-  document.getElementById('new-barcode-display').textContent = 'Barcode: ' + currentBarcode;
-  document.getElementById('new-name').value = currentProduct?.Prodotto || '';
-  document.getElementById('new-brand').value = currentProduct?.Marca || '';
-  document.getElementById('new-format').value = currentProduct?.Formato || '';
-  document.getElementById('new-cat').value = currentProduct?.Categoria || '';
-  document.getElementById('new-carb').value = currentProduct?.Carboidrati || '';
-  document.getElementById('new-prot').value = currentProduct?.Proteine || '';
-  document.getElementById('new-fat').value = currentProduct?.Grassi || '';
-  document.getElementById('new-cal').value = currentProduct?.Calorie || '';
-  document.getElementById('modal-new').classList.add('open');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-function changeAddQty(delta) {
-  addQty = Math.max(1, addQty + delta);
-  document.getElementById('add-qty').textContent = addQty;
-}
-
-// ══════════════════════════════════════════════════════════════
-// CONFIRM ACTIONS
-// ══════════════════════════════════════════════════════════════
-function confirmNewProduct() {
-  const name = document.getElementById('new-name').value.trim();
-  if (!name) {
-    showToast('Inserisci il nome', 'error');
-    return;
-  }
-  
-  currentProduct = {
-    Barcode: currentBarcode,
-    Prodotto: name,
-    Marca: document.getElementById('new-brand').value.trim(),
-    Formato: document.getElementById('new-format').value.trim(),
-    Categoria: document.getElementById('new-cat').value.trim(),
-    Carboidrati: document.getElementById('new-carb').value,
-    Proteine: document.getElementById('new-prot').value,
-    Grassi: document.getElementById('new-fat').value,
-    Calorie: document.getElementById('new-cal').value,
-  };
-  
-  // Save to local catalog
-  if (!CATALOGO.find(c => c.Barcode === currentBarcode)) {
-    CATALOGO.push(currentProduct);
-    localChanges.push({ type: 'add_catalogo', data: currentProduct, ts: Date.now() });
-    saveLocalChanges();
-    
-    // Send to Google Sheets
-    sendToSheet({
-      action: 'add_catalogo',
-      Barcode: currentProduct.Barcode,
-      Prodotto: currentProduct.Prodotto,
-      Marca: currentProduct.Marca,
-      Formato: currentProduct.Formato,
-      Categoria: currentProduct.Categoria,
-      Carboidrati: currentProduct.Carboidrati,
-      Proteine: currentProduct.Proteine,
-      Grassi: currentProduct.Grassi,
-      Calorie: currentProduct.Calorie
-    });
-  }
-  
-  closeModal('modal-new');
-  showProductResult(currentProduct, false);
-  showAddModal();
-}
-
-function confirmAdd() {
-  if (!currentProduct) return;
-  
-  const scadRaw = document.getElementById('add-exp').value;
-  let scadenza = '';
-  if (scadRaw) {
-    const [y, m] = scadRaw.split('-');
-    scadenza = `${m}/${y}`;
-  }
-  
-  const newItem = {
-    Barcode: currentProduct.Barcode,
-    Quantita: addQty.toString(),
-    Minimo: document.getElementById('add-min').value,
-    Posizione: document.getElementById('add-pos').value,
-    Scadenza: scadenza,
-    DataInserimento: new Date().toISOString().split('T')[0]
-  };
-  
-  // Check if same product in same position exists
-  const existing = INVENTARIO.find(i => i.Barcode === newItem.Barcode && i.Posizione === newItem.Posizione);
-  if (existing) {
-    existing.Quantita = (parseInt(existing.Quantita) || 0) + addQty;
-    localChanges.push({ type: 'update_qty', barcode: newItem.Barcode, posizione: newItem.Posizione, newQty: existing.Quantita, ts: Date.now() });
-    
-    // Send update to Google Sheets
-    sendToSheet({
-      action: 'update_qty',
-      Barcode: newItem.Barcode,
-      Posizione: newItem.Posizione,
-      Quantita: existing.Quantita
-    });
-  } else {
-    INVENTARIO.push(newItem);
-    localChanges.push({ type: 'add_inventory', data: newItem, ts: Date.now() });
-    
-    // Send to Google Sheets
-    sendToSheet({
-      action: 'add_inventario',
-      Barcode: newItem.Barcode,
-      Quantita: newItem.Quantita,
-      Minimo: newItem.Minimo,
-      Posizione: newItem.Posizione,
-      Scadenza: newItem.Scadenza,
-      DataInserimento: newItem.DataInserimento
-    });
-  }
-  saveLocalChanges();
-  
-  closeModal('modal-add');
-  clearResult();
-  showToast('✓ Aggiunto!', 'success');
-  render();
-}
-
-function updateQty(barcode, posizione, delta) {
-  const item = INVENTARIO.find(i => i.Barcode === barcode && i.Posizione === posizione);
+function updateQty(barcode, delta) {
+  const item = INVENTARIO.find(i => i.Barcode === barcode);
   if (!item) return;
   
   const newQty = Math.max(0, (parseInt(item.Quantita) || 0) + delta);
   item.Quantita = newQty;
   
-  localChanges.push({ type: 'update_qty', barcode, posizione, newQty, delta, ts: Date.now() });
-  saveLocalChanges();
-  
-  // Send update to Google Sheets
-  sendToSheet({
-    action: 'update_qty',
-    Barcode: barcode,
-    Posizione: posizione,
-    Quantita: newQty
-  });
-  
-  if (newQty === 0) {
-    // Remove from inventory
-    const idx = INVENTARIO.indexOf(item);
-    if (idx > -1) INVENTARIO.splice(idx, 1);
-    showToast('Prodotto rimosso', '');
-  }
+  // Send to sheet
+  sendToSheet({ action: 'update_qty', Barcode: barcode, Quantita: newQty });
   
   render();
 }
@@ -1080,17 +857,12 @@ function showToast(msg, type = '') {
 }
 
 // ══════════════════════════════════════════════════════════════
-// MODAL CLOSE ON OVERLAY CLICK
-// ══════════════════════════════════════════════════════════════
-document.querySelectorAll('.overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('open');
-  });
-});
-
-// ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
+document.getElementById('modal-add').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-add') closeModal();
+});
+
 loadData();
 </script>
 </body>
